@@ -21,9 +21,9 @@ public:
 };
 
 class linkedlist{
-    Node * head;
-    
     public:
+    
+    Node * head;
     
     linkedlist(){head=NULL;}
     
