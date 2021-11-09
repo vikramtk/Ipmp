@@ -1,4 +1,5 @@
 //Clone a linked list with next and arbit pointer in O(n) time
+//Note that the class Node in the header file classes.h has an additional pointer arbit
 
 #include<bits/stdc++.h>
 #include "classes.h"
