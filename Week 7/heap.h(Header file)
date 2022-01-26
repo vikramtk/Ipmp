@@ -1,0 +1,122 @@
+using namespace std;
+
+void swap(int*x,int*y)
+{
+    int temp=*x;
+    *x=*y;
+    *y=temp;
+}
+
+class minheap
+{
+    int *arr,capacity,heapsize;
+    
+    public:
+           minheap(int cap){
+               heapsize=0;
+               capacity=cap;
+               arr=new int[cap];
+           }
+           
+           void minheapify(int);
+           
+           int parent(int i){return (i-1)/2;}
+           int left(int i){return 2*i +1;}
+           int right(int i){return 2*i +2;}
+           
+           int peek(){
+               if(heapsize==0)
+               return -1;
+               else return arr[0];
+           }
+           
+           void decrease(int k,int val);
+           int extractmin();
+           
+           void insert(int k);
+           
+           void deletekey(int i);
+           
+};
+
+void minheap::insert(int k)
+{
+    if(heapsize==capacity)
+    {
+        cout<<"\nOverflow";
+        return;
+    }
+    
+    heapsize++;
+    int i=heapsize-1;
+    arr[i]=k;
+    
+    while(i!=0 && arr[parent(i)]>arr[i])
+    {
+        swap(&arr[parent(i)],&arr[i]);
+        i=parent(i);
+    }
+}
+
+void minheap::minheapify(int i)
+{
+    while(left(i)<heapsize)
+    {
+        int smallest=i;
+        if(arr[left(i)]<arr[i])
+            smallest=left(i);
+        if(right(i)<heapsize && arr[right(i)]<arr[smallest])
+            smallest=right(i);
+        if(smallest!=i)
+        {
+            swap(&arr[smallest],&arr[i]);
+            i=smallest;
+        }
+        else if(smallest==i)
+        break;
+    }
+}
+
+int minheap::extractmin()
+{
+    if(heapsize==0)
+    {
+        cout<<"\nEmpty";
+        return INT_MAX;
+    }
+    
+    if(heapsize==1)
+    {
+        heapsize--;
+        return arr[0];
+    }
+    
+    else
+    {
+        int temp=arr[0];
+        arr[0]=arr[heapsize-1];
+        heapsize--;
+        minheapify(0);
+        
+        return temp;
+    }
+}
+
+void minheap::decrease(int k,int val)
+{
+    if(val>=k)
+    return;
+    
+    arr[k]=val;
+    while(k>0 && arr[parent(k)]>arr[k])
+    {
+        swap(&arr[k],&arr[parent(k)]);
+        k=parent(k);
+    }
+}
+
+void minheap::deletekey(int i)
+{
+    decrease(i,INT_MIN);
+    extractmin();
+}
