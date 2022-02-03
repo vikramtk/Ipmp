@@ -1,0 +1,143 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class node{
+    public:
+    int data;
+    node*left,*right;
+    
+    node* insert(int);
+    void inorder(node*);
+    void preorder(node*);
+    void postorder(node*);
+    
+    int size(node*);
+    int height(node*);
+};
+
+node* insert(int data)
+{
+    struct node*newnode=(struct node*)malloc(sizeof(struct node));
+    newnode->data=data;
+    newnode->left=newnode->right=NULL;
+    return newnode;
+}
+
+int maxdepth(node*p)
+{
+    if(p==NULL)
+    return 0;
+    
+    else
+    return 1+max({maxdepth(p->left),maxdepth(p->right)});
+}
+
+int height(node*p)
+{
+    if(p==NULL)
+    return -1;
+    
+    else
+    return 1+max({height(p->left),height(p->right)});
+}
+
+int diameter(node *p)
+{
+    if(p==NULL)
+    return 0;
+    
+    int lh=maxdepth(p->left);
+    int rh=maxdepth(p->right);
+    
+    int ld=diameter(p->left);
+    int rd=diameter(p->right);
+    
+    return max({lh+rh+1,ld,rd});
+}
+
+int size(node*p)
+{
+    if(p==NULL)
+    return 0;
+    
+    else
+    return 1+size(p->left)+size(p->right);
+}
+
+void inorder(node *p)
+{
+    if(p!=NULL)
+    {
+        inorder(p->left);
+        cout<<p->data<<'\t';
+        inorder(p->right);
+    }
+}
+
+void preorder(node *p)
+{
+    if(p!=NULL)
+    {
+        cout<<p->data<<'\t';
+        preorder(p->left);
+        preorder(p->right);
+    }
+}
+
+void postorder(node *p)
+{
+    if(p!=NULL)
+    {
+        postorder(p->left);
+        postorder(p->right);
+        cout<<p->data<<'\t';
+    }
+}
+
+int getwidth(node*p,int lvl)
+{
+    if(p==NULL)
+    return 0;
+    
+    if(lvl==1)
+    return 1;
+    
+    return getwidth(p->left,lvl-1)+getwidth(p->right,lvl-1);
+}
+
+int maxwidth(node*p)
+{
+    int maxwidth=0;
+    int width;
+    int h=maxdepth(p);
+    
+    for(int i=1;i<=h;i++)
+    {
+        width=getwidth(p,i);
+        if(width>maxwidth)
+        maxwidth=width;
+    }
+    return maxwidth;
+}
+
+int main()
+{
+    node*root=insert(1);
+    root->left=insert(2);
+    root->right=insert(3);
+    root->left->left=insert(4);
+    root->left->right=insert(5);
+    root->right->left=insert(6);
+    root->left->left->right=insert(7);
+    
+    inorder(root);
+    cout<<endl;
+    preorder(root);
+    cout<<endl;
+    postorder(root);
+    
+    cout<<size(root);
+    cout<<maxdepth(root);
+    cout<<diameter(root);
+    cout<<maxwidth(root);
+}
