@@ -1,3 +1,5 @@
+Note:There is an element travelled inside class tree and if you want to check more than one sum,then between process,make all travelled of nodes=0
+
 #include<bits/stdc++.h>
 #include "trees.h"
 using namespace std;
